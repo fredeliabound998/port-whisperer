@@ -176,32 +176,85 @@ async function main() {
     }
 
     case "kill": {
-      const killArgs = filteredArgs
+      const rawKillArgs = filteredArgs
         .slice(1)
         .filter((a) => a !== "--force" && a !== "-f");
       const force =
         filteredArgs.includes("--force") || filteredArgs.includes("-f");
       const signal = force ? "SIGKILL" : "SIGTERM";
 
-      if (killArgs.length === 0) {
+      if (rawKillArgs.length === 0) {
         console.log(
           chalk.red(
-            `\n  Usage: ports kill [-f|--force] <port|pid> [port|pid...]\n`,
+            `\n  Usage: ports kill [-f|--force] <port|pid|range> [port|pid|range...]\n`,
           ),
         );
         console.log(
           chalk.gray(
-            "  Kills listener on port (1-65535), or process by PID. Use -f for SIGKILL.\n",
+            "  Kills listener on port (1-65535), or process by PID. Use -f for SIGKILL.",
           ),
         );
+        console.log(chalk.gray("  Ranges: ports kill 3000-3010\n"));
         process.exit(1);
       }
 
+      // Expand port ranges (e.g. "3000-3010") into individual args
+      const killArgs = [];
+      const rangeSpans = []; // track which args came from ranges
+      for (const arg of rawKillArgs) {
+        const rangeMatch = arg.match(/^(\d+)-(\d+)$/);
+        if (rangeMatch) {
+          const start = parseInt(rangeMatch[1], 10);
+          const end = parseInt(rangeMatch[2], 10);
+          if (start > end) {
+            console.log(
+              chalk.red(
+                `\n  ✕ Invalid range: ${arg} (start must be less than end)\n`,
+              ),
+            );
+            process.exitCode = 1;
+            return;
+          }
+          if (end - start > 1000) {
+            console.log(
+              chalk.red(`\n  ✕ Range too large: ${arg} (max 1000 ports)\n`),
+            );
+            process.exitCode = 1;
+            return;
+          }
+          if (start < 1 || end > 65535) {
+            console.log(
+              chalk.red(
+                `\n  ✕ Invalid range: ${arg} (ports must be 1-65535)\n`,
+              ),
+            );
+            process.exitCode = 1;
+            return;
+          }
+          const rangeStart = killArgs.length;
+          for (let p = start; p <= end; p++) {
+            killArgs.push(String(p));
+          }
+          rangeSpans.push({
+            start: rangeStart,
+            end: killArgs.length,
+            label: arg,
+          });
+        } else {
+          killArgs.push(arg);
+        }
+      }
+
       let anyFailed = false;
+      let killed = 0;
+      let noListener = 0;
       console.log();
 
-      for (const arg of killArgs) {
+      for (let i = 0; i < killArgs.length; i++) {
+        const arg = killArgs[i];
         const n = parseInt(arg, 10);
+        const isFromRange = rangeSpans.some((r) => i >= r.start && i < r.end);
+
         if (isNaN(n) || String(n) !== arg.trim()) {
           console.log(chalk.red(`  ✕ "${arg}" is not a valid port/PID`));
           anyFailed = true;
@@ -210,6 +263,11 @@ async function main() {
 
         const resolved = await resolveKillTarget(n);
         if (!resolved) {
+          // Silently count misses from ranges instead of spamming
+          if (isFromRange) {
+            noListener++;
+            continue;
+          }
           const msg =
             n <= 65535
               ? `No listener on :${n} and no process with PID ${n}`
@@ -229,12 +287,24 @@ async function main() {
         const ok = killProcess(pid, signal);
         if (ok) {
           console.log(chalk.green(`  ✓ Sent ${signal} to ${label}`));
+          killed++;
         } else {
           console.log(
             chalk.red(`  ✕ Failed. Try: sudo kill${force ? " -9" : ""} ${pid}`),
           );
           anyFailed = true;
         }
+      }
+
+      // Print summary for ranges
+      if (rangeSpans.length > 0) {
+        const parts = [];
+        if (killed > 0) parts.push(chalk.green(`${killed} killed`));
+        if (noListener > 0) parts.push(chalk.gray(`${noListener} empty`));
+        if (anyFailed) parts.push(chalk.red(`some failed`));
+        console.log(
+          `  ${chalk.dim("Range summary:")} ${parts.join(chalk.dim(", "))}`,
+        );
       }
 
       console.log();
@@ -280,7 +350,10 @@ async function main() {
         `    ${chalk.cyan("ports <number>")}     Detailed info about a specific port`,
       );
       console.log(
-        `    ${chalk.cyan("ports kill <n>")}     Kill by port or PID (-f for SIGKILL)`,
+        `    ${chalk.cyan("ports kill <n>")}     Kill by port, PID, or range (-f for SIGKILL)`,
+      );
+      console.log(
+        `    ${chalk.cyan("ports kill 3000-3010")} Kill all listeners in a port range`,
       );
       console.log(
         `    ${chalk.cyan("ports clean")}        Kill orphaned/zombie dev servers`,
