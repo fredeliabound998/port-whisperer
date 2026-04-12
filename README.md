@@ -102,6 +102,32 @@ $ ports kill 3000-3005
   Range summary: 2 killed, 4 empty
 ```
 
+### View process logs
+
+```bash
+ports logs 3000               # show last 50 lines and exit
+ports logs 3000 -f            # follow (stream new lines)
+ports logs 3000 --lines 10    # show last 10 lines
+ports logs 3000 --lines 10 -f # show last 10 then follow
+ports logs 3000 --err         # stderr only
+```
+
+Discovers log files automatically using `lsof` file descriptor detection. If stdout/stderr is redirected to a file, it finds and tails it. Falls back to system log (`log show` on macOS, `journalctl` on Linux) when no log files are found.
+
+```
+$ ports logs 3000 --lines 5
+
+  Port Whisperer — logs for :3000 (node, PID 42872)
+
+  ▸ Tailing stdout: /tmp/next-dev.output
+
+  ▲ Next.js 16.2.3 (Turbopack)
+  - Local: http://localhost:3000
+  ✓ Ready in 195ms
+   GET / 200 in 990ms
+   GET /api/auth/session 200 in 6ms
+```
+
 ### Show all dev processes
 
 ```bash
